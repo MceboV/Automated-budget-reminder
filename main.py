@@ -9,14 +9,14 @@ MY_EMAIL = "cebovilaz@gmail.com"
 MY_PASSWORD = "riosvwlomaydvxhi"
 
 
-def get_today_tuple():
+def get_today_day():
     today = datetime.now()
-    return today.month, today.day
+    return today.day
 
 
 def read_client_info(file_path):
     data = pd.read_csv(file_path)
-    return {(row["month"], row["day"]): row for _, row in data.iterrows()}
+    return {row["day"]: row for _, row in data.iterrows()}
 
 
 def read_email_template(template_path):
@@ -38,11 +38,11 @@ def send_email(subject, to_email, message):
 
 
 def main():
-    today_tuple = get_today_tuple()
+    today_day = get_today_day()
 
     client_info = read_client_info("clients_info.csv")
-    if today_tuple in client_info:
-        budget_person = client_info[today_tuple]
+    if today_day in client_info:
+        budget_person = client_info[today_day]
         template_contents = read_email_template("email_template/email_reminder.txt")
         message = template_contents.replace("[NAME]", budget_person["name"])
 
